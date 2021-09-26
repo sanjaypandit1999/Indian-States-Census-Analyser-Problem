@@ -16,9 +16,7 @@ public class StateCensusAnalyser {
             CSVReader csvReader = new CSVReader(reader);
             String[] line;
             int skipHeader = 0;
-            do {
-                if (!((line = csvReader.readNext()) != null))
-                    break;
+            while (((line = csvReader.readNext()) != null)) {
                 if (skipHeader == 0) {
                     skipHeader++;
                     continue;
@@ -28,13 +26,15 @@ public class StateCensusAnalyser {
                 }
                 System.out.println();
                 numOfRecords++;
-            } while (true);
-        } catch (IOException e) {
-            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM);
-        } catch (CsvValidationException e) {
-            e.printStackTrace();
+            }
         } catch (RuntimeException e) {
+            if (e.getMessage().contains("1"))
+                throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_HEADER);
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMITER);
+        }catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM);
+        }catch (CsvValidationException e) {
+            e.printStackTrace();
         }
         return numOfRecords;
     }
