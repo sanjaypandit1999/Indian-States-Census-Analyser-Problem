@@ -33,6 +33,8 @@ public class StateCensusAnalyser {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM);
         } catch (CsvValidationException e) {
             e.printStackTrace();
+        } catch (RuntimeException e) {
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMITER);
         }
         return numOfRecords;
     }

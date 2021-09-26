@@ -8,6 +8,7 @@ public class StateCensusAnalyserTest {
     private static final String INDIA_STATE_CENSUS_CSV_FILE_PATH = "C:\\Users\\Sanju\\Desktop\\Analyser\\IndianStates.csv";
     private static final String WRONG_CSV_FILE_PATH = "C:\\User\\Analyser\\IndianStates.csv";
     private static final String WRONG_CSV_FILE_TYPE = "C:\\Users\\Sanju\\Desktop\\Analyser\\IndianStates.pdf";
+    private static final String WRONG_CSV_FILE_DELIMITER_PATH = "C:\\Users\\Sanju\\Desktop\\Analyser\\IndianWrongDelimiter.csv";
     @Test
     public void givenIndianStateCensusCSVFileReturnsCorrectRecords(){
         try {
@@ -40,6 +41,16 @@ public class StateCensusAnalyserTest {
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.WRONG_FILE_TYPE, e.type);
             System.out.println(e.type);
+        }
+    }
+    @Test
+    public void givenIndianStateCensusData_WithWrongFileDelimiter_ShouldThrowException() {
+        try {
+            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+            stateCensusAnalyser.CSVStateCensus(WRONG_CSV_FILE_DELIMITER_PATH);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMITER, e.type);
+            System.out.println(e.getMessage());
         }
     }
 }
