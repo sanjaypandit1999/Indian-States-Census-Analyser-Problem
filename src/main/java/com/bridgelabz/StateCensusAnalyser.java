@@ -28,7 +28,7 @@ public class StateCensusAnalyser {
                 numOfRecords++;
             }
         } catch (RuntimeException e) {
-            if (e.getMessage().contains("1"))
+            if (e.getMessage().contains("header!"))
                 throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_HEADER);
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMITER);
         }catch (IOException e) {
