@@ -5,13 +5,11 @@ import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class StateCensusAnalyser {
 
     public  int CSVStateCensus(String csvFilepath) throws CensusAnalyserException {
+        this.checkValidCSVFile(csvFilepath);
         int numOfRecords = 0;
         try {
             FileReader reader = new FileReader(csvFilepath);
@@ -32,10 +30,16 @@ public class StateCensusAnalyser {
                 numOfRecords++;
             } while (true);
         } catch (IOException e) {
-            throw new CensusAnalyserException(e.getMessage(),CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM);
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM);
         } catch (CsvValidationException e) {
             e.printStackTrace();
         }
         return numOfRecords;
     }
+
+    private void checkValidCSVFile(String csvFilePath) throws CensusAnalyserException {
+        if (!csvFilePath.contains(".csv"))
+            throw new CensusAnalyserException("This is invalid file type", CensusAnalyserException.ExceptionType.WRONG_FILE_TYPE);
+    }
+
 }
