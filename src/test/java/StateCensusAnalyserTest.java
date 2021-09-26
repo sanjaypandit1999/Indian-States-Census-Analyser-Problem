@@ -1,17 +1,35 @@
+import com.bridgelabz.CensusAnalyserException;
 import com.bridgelabz.StateCensusAnalyser;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class StateCensusAnalyserTest {
     private static final String INDIA_STATE_CENSUS_CSV_FILE_PATH = "C:\\Users\\Sanju\\Desktop\\Analyser\\IndianStates.csv";
+    private static final String WRONG_CSV_FILE_PATH = "C:\\User\\Analyser\\IndianStates.csv";
     @Test
     public void givenIndianStateCensusCSVFileReturnsCorrectRecords(){
         try {
             StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
             int numOfRecords = stateCensusAnalyser.CSVStateCensus(INDIA_STATE_CENSUS_CSV_FILE_PATH);
-            Assertions.assertEquals(22, numOfRecords);
+            Assert.assertEquals(22, numOfRecords);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenIndiaStateCensusData_WithWrongFile_ShouldThrowException() {
+        try {
+            StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(CensusAnalyserException.class);
+            stateCensusAnalyser.CSVStateCensus(WRONG_CSV_FILE_PATH);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.STATE_CENSUS_FILE_PATH_PROBLEM, e.type);
+            System.out.println(e.type);
+        }
+    }
+
+
 }
